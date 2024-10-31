@@ -1,0 +1,3 @@
+extensions:
+  workfront/ui/1:
+    $include: src/workfront-template-1/ext.config.yaml

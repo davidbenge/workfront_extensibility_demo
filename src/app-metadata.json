@@ -1,0 +1,7 @@
+{
+    "extensions": [
+        {
+            "extensionPoint": "workfront/ui/1"
+        }
+    ]
+}

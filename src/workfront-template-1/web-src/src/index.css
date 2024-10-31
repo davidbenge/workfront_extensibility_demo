@@ -1,0 +1,26 @@
+/*
+* <license header>
+*/
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.root_box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.root_box .row.content {
+  flex: 1 1 auto;
+}
+
+#asset-selector-container {
+  height: calc(100vh - 80px); 
+  width: calc(100vw - 60px); 
+  margin: -20px;
+} 
