@@ -13,11 +13,19 @@ function ExtensionRegistration() {
   const navigate = useNavigate();
 
   function handleNavAssetClick(event) {
-    navigate('/assetexampleform', { replace: true });
+    navigate('/asset_select_example_form', { replace: true });
+  }
+
+  function handleNavAsset2Click(event) {
+    navigate('/asset_select_example_form2', { replace: true });
   }
 
   function handleNavCfFormClick(event) {
-    navigate('/cfexampleform', { replace: true });
+    navigate('/cf_example_form', { replace: true });
+  }
+
+  function handleNavCfSelectFormClick(event) {
+    navigate('/cf_select_example_form', { replace: true });
   }
 
   const init = async () => {
@@ -31,9 +39,23 @@ function ExtensionRegistration() {
                 id: "cfFormExample",
                 label: "Workfront CF Form Example",
                 icon: cfFormIcon,
-                url: "/cfexampleform"
+                url: "/cf_example_form"
               }
             ];
+          }
+        },
+        secondaryNav:{
+          TASK:{
+            getItems(){
+              return [
+                {
+                  id: "assetSelectExample1",
+                  label: "Asset Select Form Example",
+                  icon: cfFormIcon,
+                  url: "/asset_select_example_form"
+                }
+              ];
+            }
           }
         }
       }
@@ -43,8 +65,10 @@ function ExtensionRegistration() {
 
   return (
     <Flex wrap gap="size-200" margin="size-200">
-      <Button variant="accent" onPress={handleNavAssetClick}>Asset Select Demo</Button>
+      <Button variant="accent" onPress={handleNavAssetClick}>Asset Select Demo passed auth</Button>
+      <Button variant="accent" onPress={handleNavAsset2Click}>Asset Select Demo login</Button>
       <Button variant="accent" onPress={handleNavCfFormClick}>CF Demo</Button>
+      <Button variant="accent" onPress={handleNavCfSelectFormClick}>CF Select Demo</Button>
     </Flex>
   )
 }

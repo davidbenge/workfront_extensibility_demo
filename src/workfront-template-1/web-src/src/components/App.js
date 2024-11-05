@@ -9,6 +9,8 @@ import ExtensionRegistration from "./ExtensionRegistration";
 import CfExampleForm from "./CfExampleForm";
 import { defaultTheme, Provider} from '@adobe/react-spectrum';
 import AssetMfeExampleForm from "./AssetMfeExampleForm";
+import CfSelectExampleForm from "./CfSelectExampleForm";
+import AssetMfeExampleForm2 from "./AssetMfeExampleForm2";
 
 function App() {
   return (
@@ -16,8 +18,10 @@ function App() {
       <Router>
         <ErrorBoundary onError={onError} FallbackComponent={fallbackComponent}>
           <Routes>
-          <Route exact path="assetexampleform" element={<AssetMfeExampleForm />} />
-            <Route exact path="cfexampleform" element={<CfExampleForm />} />
+            <Route exact path="asset_select_example_form" element={<AssetMfeExampleForm />} />
+            <Route exact path="asset_select_example_form2" element={<AssetMfeExampleForm2 />} />
+            <Route exact path="cf_example_form" element={<CfExampleForm />} />
+            <Route exact path="cf_select_example_form" element={<CfSelectExampleForm />} />
             <Route path="*" element={<ExtensionRegistration />} />
           </Routes>
         </ErrorBoundary>
