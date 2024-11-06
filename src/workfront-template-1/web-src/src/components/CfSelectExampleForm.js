@@ -15,11 +15,15 @@ import { useNavigate } from 'react-router-dom';
 
 function CfExampleForm() {
   const navigate = useNavigate();
-  let [authToken, setAuthToken] = React.useState("");
+  let [imsToken, setAuthToken] = React.useState("");
   // CF claim options
   let [claims, setClaims] = React.useState([]);
   let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
   let [claimName, setClaimName] = React.useState("");
+  let [imsOrg, setImsOrg] = React.useState("33C1401053CF76370A490D4C@AdobeOrg");
+  let [imsClientId, setImsClientId] = React.useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
+  let [repositoryId, setRepositoryId] = React.useState("delivery-p142461-e1463137.adobeaemcloud.com");
+  const [isOpen, setIsOpen] = React.useState(false);
 
   function handleBackClick(event) {
     navigate('/', { replace: true });
@@ -35,41 +39,45 @@ function CfExampleForm() {
   };
   init().catch(console.error);
 
-  useEffect(() => {
-    async function fetchClaims() {
-      //Todo: pull in some content fragments from demo system
-      //todo: rebuild the content fragment data for the picker options
-      
-      //const response = await fetch('https://json.placeholder.typicode.com/todos');
-      //const data = await response.json();
-      setClaims([{id:123, name:'test claim 1'}]);
-    }
-
-    fetchClaims();
-  }, []);
-
-  let onSubmit = (e) => {
-    e.preventDefault();
-
-    // TODO: write to fusion webhook to handle form submit  
-
-    alert(selectedSecondaryClaimId);
-  };
-
   return (
-    <>
-    <Flex direction="column" gap="size-100" margin="size-200">
-      <Flex direction="row" gap={8}>
-        <Button variant="accent" onPress={handleBackClick} >Back</Button>
-      </Flex>
-      <View borderWidth="thin"
-        borderColor="dark"
-        borderRadius="medium"
-        padding="size-250">
-        <Text>INSERT THE CF SELECTOR HERE</Text>
-      </View>
-    </Flex>
-    </>
+    <DialogTrigger type="fullscreen" isOpen={isOpen}>
+      <ActionButton onPress={() => setIsOpen(true)}>Show Fragment Selector</ActionButton>
+      <ContentFragmentSelector
+          orgId={imsOrg}
+          imsToken={imsToken}
+          repoId={repoId}
+          isOpen={isOpen}
+          filters={{
+              folder: "/content/dam",
+              status: ["PUBLISHED", "MODIFIED"],
+              tag: [
+                      {
+                          id: "1:",
+                          name: "1",
+                          path: "/content/cq:tags/1",
+                          description: "",
+                      },
+                  ],
+          }}
+          readonlyFilters={{
+              tag: [
+                      {
+                          id: "1:",
+                          name: "1",
+                          path: "/content/cq:tags/1",
+                          description: "",
+                      },
+                  ],
+          }}
+          onDismiss={() => setIsOpen(false)}
+          onSubmit={({ contentFragments, domainNames }) => {
+              const selectedContentFragment = contentFragments[0];
+              const usedDomainName = domainNames[0];
+              const contentFragmentAlert = `Example link: https://${usedDomainName}${selectedContentFragment.path}.cfm.gql.json`;
+              alert(contentFragmentAlert);
+          }}
+      />
+    </DialogTrigger>
   );
 }
 
