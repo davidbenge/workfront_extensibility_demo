@@ -15,6 +15,11 @@ import { useNavigate } from 'react-router-dom';
 
 function CfExampleForm() {
   const navigate = useNavigate();
+  let [authToken, setAuthToken] = React.useState("");
+  // CF claim options
+  let [claims, setClaims] = React.useState([]);
+  let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
+  let [claimName, setClaimName] = React.useState("");
 
   function handleBackClick(event) {
     navigate('/', { replace: true });
@@ -25,6 +30,8 @@ function CfExampleForm() {
       id: extensionId,
       metadata
     });
+
+    console.log("guestConnection", JSON.stringify(guestConnection, null, 2));
   };
   init().catch(console.error);
 
@@ -40,11 +47,6 @@ function CfExampleForm() {
 
     fetchClaims();
   }, []);
-
-  // CF claim options
-  let [claims, setClaims] = React.useState([]);
-  let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
-  let [claimName, setClaimName] = React.useState("");
 
   let onSubmit = (e) => {
     e.preventDefault();

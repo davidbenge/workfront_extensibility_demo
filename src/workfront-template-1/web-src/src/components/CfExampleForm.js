@@ -17,6 +17,7 @@ import AEMHeadless from "@adobe/aem-headless-client-js";
 function CfSelectExampleForm() {
   const navigate = useNavigate();
   let aemHeadlessClient; // AEM Headless client
+  let [authToken, setAuthToken] = React.useState("");
 
   function handleBackClick(event) {
     navigate('/', { replace: true });
@@ -40,7 +41,7 @@ function CfSelectExampleForm() {
         aemHeadlessClient = new AEMHeadless({
           serviceURL: "https://author-p142461-e1463137.adobeaemcloud.com",
           endpoint: "/graphql",
-          auth: "" });
+          auth: `${authToken}` });
       }
 
       let getData
@@ -58,7 +59,7 @@ function CfSelectExampleForm() {
       const response = await fetch('https://author-p142461-e1463137.adobeaemcloud.com/graphql/execute.json/global/allClaims',{
         method:'GET',
         headers: {
-          "Authorization":"Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE3MzA3ODQyNDA5NjhfMzc1ZTM1YWQtMjM1Ny00YThjLTkyMGQtNTFmYjFmNmEyOTQzX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZW0tYXNzZXRzLWZyb250ZW5kLTEiLCJ1c2VyX2lkIjoiNDg1MzI5RDU2NDBDMjZEMzBBNDk1RkEwQDRhYWIyNzIyNjQwYzI2ZDI0OTVmY2EuZSIsInN0YXRlIjoie1wic2Vzc2lvblwiOlwiaHR0cHM6Ly9pbXMtbmExLmFkb2JlbG9naW4uY29tL2ltcy9zZXNzaW9uL3YxL056QmxaV1UyTkdRdFlXWmtPQzAwTTJNMkxUbGhaRFF0WlRGa09URTVabUprTWpOaUxTMDRSVFZGTkRkRVFUUTNNRFpFTlVRMU9Ua3lNREUyUWpoQVFXUnZZbVZKUkFcIn0iLCJhcyI6Imltcy1uYTEiLCJhYV9pZCI6IjhFNUU0N0RBNDcwNkQ1RDU5OTIwMTZCOEBBZG9iZUlEIiwiY3RwIjowLCJmZyI6Ilk1VUNJMkhOWFBQN01IVUtITVFWMlhBQTVZPT09PT09Iiwic2lkIjoiMTczMDY5NjIyMjU1OV9mMWNkYzg4Mi1mZWZhLTQ1N2UtOGZhOS1mMWNmMGNjMDVjYzRfdXcyIiwibW9pIjoiODE4N2YzNTMiLCJwYmEiOiJPUkcsTWVkU2VjTm9FVixMb3dTZWMiLCJleHBpcmVzX2luIjoiODY0MDAwMDAiLCJjcmVhdGVkX2F0IjoiMTczMDc4NDI0MDk2OCIsInNjb3BlIjoiQWRvYmVJRCxvcGVuaWQscmVhZF9vcmdhbml6YXRpb25zLGFiLm1hbmFnZSxhZGRpdGlvbmFsX2luZm8ucHJvamVjdGVkUHJvZHVjdENvbnRleHQsZmlyZWZseV9hcGksb3JnLnJlYWQifQ.fBpuUoNpythJiNLJAABMXm_D_8HcdaHB-MLfW48mEDh8yTvGQBSjrauPBfoiNn_saPNvH5e9aOVm2SymgkXxkJEYmgQSP203feaMmpvpML7shnezU6V8z_3PUqbrVebOld1AyUJX6-pBeggfqLzMjsdAkA35ZkEGfNiys8hAv5pivCXfovaZgxpLlUTGiTAdsiJFzbiP-peW3BPMtDkbS5sn41lmcjqaqg4GrWn_9rhF9nN354QQpoYqgAAEpmKdNbLVacctar9EDlSqIkuGdjab_M-uap19ag0VIIHzty8McJ1RfytkxRCBmywkv4cJ-zH4gP6EdXB1lmvT2whm0g"
+          "Authorization":`Bearer ${authToken}`
         },
        });
       const data = await response.json();
