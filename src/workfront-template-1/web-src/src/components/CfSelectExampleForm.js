@@ -64,17 +64,7 @@ function CfExampleForm() {
         borderColor="dark"
         borderRadius="medium"
         padding="size-250">
-        <Text>Primary Claim {claimName}</Text>
-        <Form onSubmit={onSubmit} maxWidth="size-3000">
-          <TextField label="Claim Name" value={claimName} onChange={setClaimName} />
-          <Picker isRequired label="Choose primary claim" onSelectionChange={setSelectedSecondaryClaimId} items={claims}>
-            {(item) => <Item>{item.name}</Item>}
-          </Picker>
-        <ButtonGroup>
-          <Button type="submit" variant="primary">Save</Button>
-          <Button type="reset" variant="secondary">Reset</Button>
-        </ButtonGroup>
-        </Form>
+        <Text>INSERT THE CF SELECTOR HERE</Text>
       </View>
     </Flex>
     </>

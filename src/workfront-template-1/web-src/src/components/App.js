@@ -18,10 +18,10 @@ function App() {
       <Router>
         <ErrorBoundary onError={onError} FallbackComponent={fallbackComponent}>
           <Routes>
-            <Route exact path="asset_select_example_form" element={<AssetMfeExampleForm />} />
-            <Route exact path="asset_select_example_form2" element={<AssetMfeExampleForm2 />} />
-            <Route exact path="cf_example_form" element={<CfExampleForm />} />
-            <Route exact path="cf_select_example_form" element={<CfSelectExampleForm />} />
+            <Route exact path="/index.html#asset_select_example_form" element={<AssetMfeExampleForm />} />
+            <Route exact path="/index.html#asset_select_example_form2" element={<AssetMfeExampleForm2 />} />
+            <Route exact path="/index.html#cf_example_form" element={<CfExampleForm />} />
+            <Route exact path="/index.html#cf_select_example_form" element={<CfSelectExampleForm />} />
             <Route path="*" element={<ExtensionRegistration />} />
           </Routes>
         </ErrorBoundary>

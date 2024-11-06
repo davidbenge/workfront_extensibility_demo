@@ -32,27 +32,33 @@ function ExtensionRegistration() {
     const guestConnection = await register({
       methods:{
         id: extensionId,
-        mainMenu:{
-          getItems(){
-            return [
-              {
-                id: "cfFormExample",
-                label: "Workfront CF Form Example",
-                icon: cfFormIcon,
-                url: "/cf_example_form"
-              }
-            ];
-          }
-        },
         secondaryNav:{
           TASK:{
             getItems(){
               return [
                 {
                   id: "assetSelectExample1",
-                  label: "Asset Select Form Example",
+                  label: "Asset Select Form Example 1",
                   icon: cfFormIcon,
                   url: "/asset_select_example_form"
+                },
+                {
+                  id: "assetSelectExample2",
+                  label: "Asset Select Form Example 1",
+                  icon: cfFormIcon,
+                  url: "/asset_select_example_form2"
+                },
+                {
+                  id: "cfExampleForm1",
+                  label: "CF Form Example",
+                  icon: cfFormIcon,
+                  url: "/cf_example_form"
+                },
+                {
+                  id: "cfExampleForm2",
+                  label: "CF Select Example",
+                  icon: cfFormIcon,
+                  url: "/cf_select_example_form"
                 }
               ];
             }
