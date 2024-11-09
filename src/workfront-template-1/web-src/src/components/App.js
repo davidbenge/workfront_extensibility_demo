@@ -13,18 +13,18 @@ import CfSelectExampleForm from "./CfSelectExampleForm";
 import AssetMfeExampleForm2 from "./AssetMfeExampleForm2";
 
 function App() {
+
   return (
     <Provider theme={defaultTheme} colorScheme="light">
       <Router>
-        <ErrorBoundary onError={onError} FallbackComponent={fallbackComponent}>
-          <Routes>
-            <Route exact path="/asset_select_example_form" element={<AssetMfeExampleForm />} />
-            <Route exact path="/asset_select_example_form2" element={<AssetMfeExampleForm2 />} />
-            <Route exact path="/cf_example_form" element={<CfExampleForm />} />
-            <Route exact path="/cf_select_example_form" element={<CfSelectExampleForm />} />
-            <Route path="*" element={<ExtensionRegistration />} />
-          </Routes>
-        </ErrorBoundary>
+        <Routes>    
+          <Route index element={<ExtensionRegistration />} />    
+          <Route exact path="index.html" element={<ExtensionRegistration />}    />    
+          <Route exact path="/asset_select_example_form" element={<AssetMfeExampleForm />} />   
+          <Route exact path="/asset_select_example_form2" element={<AssetMfeExampleForm2 />} /> 
+          <Route exact path="/cf_example_form" element={<CfExampleForm />} /> 
+          <Route exact path="/cf_select_example_form" element={<CfSelectExampleForm />} />   
+        </Routes>
       </Router>
     </Provider>
   )

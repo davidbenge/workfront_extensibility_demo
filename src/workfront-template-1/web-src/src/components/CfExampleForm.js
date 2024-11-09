@@ -6,7 +6,7 @@
  */
 
 import { Text } from "@adobe/react-spectrum";
-import { register } from "@adobe/uix-guest";
+import { register, attach } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
@@ -17,26 +17,43 @@ import AEMHeadless from "@adobe/aem-headless-client-js";
 function CfSelectExampleForm() {
   const navigate = useNavigate();
   let aemHeadlessClient; // AEM Headless client
-  let [authToken, setAuthToken] = React.useState("");
+  const [authToken, setAuthToken] = React.useState("");
+  const [conn, setConn] = useState();
+  // CF claim options
+  let [claims, setClaims] = React.useState([]);
+  let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
+  let [claimName, setClaimName] = React.useState("");
 
   function handleBackClick(event) {
     navigate('/', { replace: true });
   }
 
-  const init = async () => {
-    const guestConnection = await register({
-      id: extensionId,
-      metadata
-    });
+  useEffect(() => {
+    const iife = async () => {
+        // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
+        const connection = await attach({
+            id: extensionId,
+        });
+        setConn(connection);
+    };
+    iife();
+  }, []);
 
-    console.log("guestConnection", JSON.stringify(guestConnection, null, 2));
-  };
-  init().catch(
-    console.error
-  );
+  useEffect(() => {
+    if (conn) {
+      // Using the connection created above, grab the document details from the host tunnel.
+      //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
+      const auth = connection?.sharedContext?.get("auth");
+      setAuthToken(auth.imsToken); // set the auth token 
+      console.info("authToken passed down from WF", authToken); //auth token passed down from hosting workfront.
+      console.info("HOST", JSON.stringify(connection?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
+    }
+  }, [conn]);
 
   useEffect(() => {
     async function fetchClaims() {
+      console.log("authToken in fetch is ========== ", authToken);
+
       if(!aemHeadlessClient){
         aemHeadlessClient = new AEMHeadless({
           serviceURL: "https://author-p142461-e1463137.adobeaemcloud.com",
@@ -57,10 +74,10 @@ function CfSelectExampleForm() {
       //todo: rebuild the content fragment data for the picker options
       
       const response = await fetch('https://author-p142461-e1463137.adobeaemcloud.com/graphql/execute.json/global/allClaims',{
-        method:'GET',
         headers: {
+          "Content-Type": "application/json",
           "Authorization":`Bearer ${authToken}`
-        },
+        }
        });
       const data = await response.json();
       
@@ -70,11 +87,6 @@ function CfSelectExampleForm() {
 
     fetchClaims();
   }, []);
-
-  // CF claim options
-  let [claims, setClaims] = React.useState([]);
-  let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
-  let [claimName, setClaimName] = React.useState("");
 
   let onSubmit = (e) => {
     e.preventDefault();
