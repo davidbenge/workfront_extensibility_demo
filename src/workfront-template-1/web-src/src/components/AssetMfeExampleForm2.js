@@ -70,10 +70,10 @@ function AssetMfeExampleForm2() {
     if (conn) {
       // Using the connection created above, grab the document details from the host tunnel.
       //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
-      const auth = connection?.sharedContext?.get("auth");
+      const auth = conn?.sharedContext?.get("auth");
       setAuthToken(auth.imsToken); // set the auth token 
       console.info("authToken passed down from WF", authToken); //auth token passed down from hosting workfront.
-      console.info("HOST", JSON.stringify(connection?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
+      console.info("HOST", JSON.stringify(conn?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
     } 
 
     console.log("imsProps: ", JSON.stringify(imsProps, null, 2));

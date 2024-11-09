@@ -20,6 +20,7 @@ function CfExampleForm() {
   let [claims, setClaims] = useState([]);
   let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = useState(null);
   let [claimName, setClaimName] = useState("");
+  const [conn, setConn] = useState();
   let [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   let [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
   let [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463137.adobeaemcloud.com");
@@ -44,10 +45,10 @@ function CfExampleForm() {
     if (conn) {
       // Using the connection created above, grab the document details from the host tunnel.
       //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
-      const auth = connection?.sharedContext?.get("auth");
+      const auth = conn?.sharedContext?.get("auth");
       setAuthToken(auth.imsToken); // set the auth token 
       console.info("authToken passed down from WF", authToken); //auth token passed down from hosting workfront.
-      console.info("HOST", JSON.stringify(connection?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
+      console.info("HOST", JSON.stringify(conn?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
     }
   }, [conn]);
 
