@@ -3,7 +3,6 @@
 */
 
 import 'core-js/stable'
-
 window.React = require('react')
 import ReactDOM from 'react-dom'
 

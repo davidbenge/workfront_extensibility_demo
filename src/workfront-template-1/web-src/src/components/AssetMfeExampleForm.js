@@ -12,6 +12,7 @@ import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {  } from '@assets/microfrontend';
 //import { AssetSelector } from 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/@assets/selectors/index.js';
 
 function AssetMfeExampleForm(props) {
@@ -21,7 +22,7 @@ function AssetMfeExampleForm(props) {
   const [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   const [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
   const [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463136.adobeaemcloud.com");
-  let assetSelectorProps = {};
+  const [assetSelectorProps, setAssetSelectorProps] = useState({});
 
   const handleGoBack = () => {
     navigate('/');
@@ -50,15 +51,15 @@ function AssetMfeExampleForm(props) {
     
     
       // imsOrg and imsToken are required for authentication in Adobe application
-      assetSelectorProps = {
+      setAssetSelectorProps({
         ordId: imsOrg,
         imsToken: auth.imsToken,
         apiKey: imsClientId,
         repositoryId: repositoryId
         //handleSelection: (assets: SelectedAssetType[]) => {},
-      };
+      });
       
-      //initAssetSelector(assetSelectorProps);
+      initAssetSelector(assetSelectorProps);
     }
   }, [conn]);
 
@@ -67,15 +68,19 @@ function AssetMfeExampleForm(props) {
    ***/
   function initAssetSelector(assetSelectorProps) {
     // get the container element in which we want to render the AssetSelector component
-    const container = document.getElementById('asset-selector-container');
+    const assetSelectContainer = document.getElementById('asset-selector-container');
 
-    console.log("assetSelectorProps: ", JSON.stringify(assetSelectorProps, null, 2));
-    
+    //console.log("assetSelectorProps: ", JSON.stringify(assetSelectorProps, null, 2));
+    const { renderAssetSelector } = PureJSSelectors;
+    PureJSSelectors.renderAssetSelector(assetSelectContainer,assetSelectorProps);
     // Call the `renderAssetSelector` available in PureJSSelectors globals to render AssetSelector
-    PureJSSelectors.renderAssetSelector(container, assetSelectorProps);
+    // PureJSSelectors.renderAssetSelector(container, assetSelectorProps);
+    // <AssetSelector {...assetSelectorProps} />
   }
 
-  return <AssetSelectorWithAuthFlow {...assetSelectorProps} />
+  return <Flex direction="column" gap="size-100" margin="size-200">
+    <div id="asset-selector-container"></div>
+  </Flex>
 }
 
 export default AssetMfeExampleForm;
