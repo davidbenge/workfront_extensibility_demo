@@ -9,9 +9,9 @@ import { extensionId, cfFormIcon } from "./Constants";
 import { useNavigate } from 'react-router-dom';
 import { Flex, View, Button, TextField } from '@adobe/react-spectrum';
 
-function ExtensionRegistration() {
+function ExtensionRegistration(props) {
   const navigate = useNavigate();
-  const isLocal = window.location.href.indexOf("localhost") > -1 ? true : false; //flag to tell app its running local.
+  const isLocal = props.isLocal; //flag to tell app its running local.
 
   function handleNavAssetClick(event) {
     navigate('/asset_select_example_form', { replace: true });
@@ -34,40 +34,48 @@ function ExtensionRegistration() {
     // so we could run STAGE and LOCAL on same workfront instance without collisions. 
     // as a standalone array this allows us to easily dump to console for debugging
     //
-    const extensionConfig = [
+    const mainExtensionConfig = [
       {
         id: (isLocal ? 'assetSelectExample1_LDEV' : 'assetSelectExample1'),
         label: (isLocal ? 'Asset Select Form Example LDEV' : 'Asset Select Form Example'),
         icon: cfFormIcon,
-        url: "/asset_select_example_form"
-      },
-      {
-        id: (isLocal ? 'assetSelectExample2_LDEV' : 'assetSelectExample2'),
-        label: (isLocal ? 'Asset Select Form Example 2 LDEV' : 'Asset Select Form Example 2'),
-        icon: cfFormIcon,
-        url: "/asset_select_example_form2"
+        url: "/index.html#/asset_select_example_form"
       },
       {
         id: (isLocal ? 'cfExampleForm1_LDEV' : 'cfExampleForm1'),
         label: (isLocal ? 'CF Form Example LDEV' : 'CF Form Example'),
         icon: cfFormIcon,
-        url: "/cf_example_form"
+        url: "/index.html#/cf_example_form"
       },
       {
         id: (isLocal ? 'cfExampleForm2_LDEV' : 'cfExampleForm2'),
-        label:  (isLocal ? 'CF Select Example LDEV' : 'CF Select Example'),
+        label:  (isLocal ? 'CF MFE Select Example LDEV' : 'CF MFE Select Example'),
         icon: cfFormIcon,
-        url: "/cf_select_example_form"
+        url: "/index.html#/cf_select_example_form"
+      }
+    ];
+
+    const secondaryExtensionConfig = [
+      {
+        id: (isLocal ? 'assetSelectExample2_LDEV' : 'assetSelectExample2'),
+        label: (isLocal ? 'Asset Select Form Example 2 LDEV' : 'Asset Select Form Example 2'),
+        icon: cfFormIcon,
+        url: "/index.html#/asset_select_example_form2"
       }
     ];
 
     const guestConnection = await register({
       methods:{
         id: extensionId,
+        mainMenu: {
+          getItems(){
+            return mainExtensionConfig
+          }
+        },
         secondaryNav:{
           TASK:{
             getItems(){
-              return extensionConfig
+              return secondaryExtensionConfig
             }
           }
         }
@@ -75,7 +83,8 @@ function ExtensionRegistration() {
     });
 
     // dumping config to console for easy debugging of registration conflicts
-    console.info("Extension registration",JSON.stringify(extensionConfig,null,2));
+    console.info("Main Extension registration",JSON.stringify(mainExtensionConfig,null,2));
+    console.info("Secondary Extension registration",JSON.stringify(secondaryExtensionConfig,null,2));
   };
   init().catch(console.error);
 
@@ -84,7 +93,7 @@ function ExtensionRegistration() {
       <Button variant="accent" onPress={handleNavAssetClick}>Asset Select Demo passed auth{(isLocal ? ' LDEV' : '')}</Button>
       <Button variant="accent" onPress={handleNavAsset2Click}>Asset Select Demo login{(isLocal ? ' LDEV' : '')}</Button>
       <Button variant="accent" onPress={handleNavCfFormClick}>CF Demo{(isLocal ? ' LDEV' : '')}</Button>
-      <Button variant="accent" onPress={handleNavCfSelectFormClick}>CF Select Demo{(isLocal ? ' LDEV' : '')}</Button>
+      <Button variant="accent" onPress={handleNavCfSelectFormClick}>CF MFE Select Demo{(isLocal ? ' LDEV' : '')}</Button>
     </Flex>
   )
 }

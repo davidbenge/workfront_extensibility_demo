@@ -13,7 +13,7 @@ import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function CfExampleForm() {
+function CfExampleForm(props) {
   const navigate = useNavigate();
   let [authToken, setAuthToken] = useState("");
   // CF claim options
@@ -26,11 +26,15 @@ function CfExampleForm() {
   let [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463137.adobeaemcloud.com");
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleBackClick(event) {
-    navigate('/', { replace: true });
-  }
+  const handleGoBack = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
+    script = document.createElement('script');
+    script.src = "https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js";
+    document.head.appendChild(script)
+
     const iife = async () => {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
         const connection = await attach({

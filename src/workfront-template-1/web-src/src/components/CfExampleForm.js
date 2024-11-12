@@ -9,12 +9,14 @@ import { Text } from "@adobe/react-spectrum";
 import { register, attach } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
-import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
+import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField, ListBox, Cell, Column, Row, TableView, TableBody, TableHeader } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AEMHeadless from "@adobe/aem-headless-client-js";
+import { useParams, navigate } from "react-router-dom";
+import Search from "@spectrum-icons/workflow/Search";
 
-function CfSelectExampleForm() {
+function CfSelectExampleForm(props) {
   const navigate = useNavigate();
   let aemHeadlessClient; // AEM Headless client
   const [authToken, setAuthToken] = React.useState("");
@@ -23,10 +25,30 @@ function CfSelectExampleForm() {
   let [claims, setClaims] = React.useState([]);
   let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] = React.useState(null);
   let [claimName, setClaimName] = React.useState("");
+  const [relatedClaimSearchText, setRelatedClaimSearchText] = useState("");
 
-  function handleBackClick(event) {
-    navigate('/', { replace: true });
-  }
+  let columns = [
+    {name: 'Name', uid: 'name'},
+    {name: 'Type', uid: 'type'},
+    {name: 'Date Modified', uid: 'date'}
+  ];
+  
+  let rows = [
+    {id: 1, firstUseDate: '6/7/2020', claimText: 'Clinically Proven to Reduce Symptoms by 50% in Just 4 Weeks!'},
+    {id: 2, firstUseDate: '4/7/2021', claimText: 'Trusted by Healthcare Professionals Worldwide for Over 20 Years'},
+    {id: 3, firstUseDate: '11/20/2010', claimText: 'Experience Relief with Our Fast-Acting Formula – Starts Working in Just 30 Minutes!'},
+    {id: 4, firstUseDate: '1/18/2016', claimText: 'Over 90% Patient Satisfaction Rate – Join the Thousands Who Trust Our Medication'},
+    {id: 5, firstUseDate: '1/18/2016', claimText: 'Backed by Cutting-Edge Research and Innovation – Your Health, Our Priority'}
+  ];
+
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
+  const handleClaimNarrow = (e) => {
+    e.preventDefault;
+    console.info("claim narrow value",relatedClaimSearchText);
+  };
 
   useEffect(() => {
     const iife = async () => {
@@ -99,19 +121,46 @@ function CfSelectExampleForm() {
   return (
     <>
     <Flex direction="column" gap="size-100" margin="size-200">
+      {props.isLocal ? (
       <Flex direction="row" gap={8}>
-        <Button variant="accent" onPress={handleBackClick} >Back</Button>
+        <Button variant="accent" onPress={handleGoBack} >Back</Button>
       </Flex>
+      ) : ('')}
       <View borderWidth="thin"
         borderColor="dark"
         borderRadius="medium"
         padding="size-250">
         <Text>Primary Claim {claimName}</Text>
-        <Form onSubmit={onSubmit} maxWidth="size-3000">
+        <Form onSubmit={onSubmit} >
           <TextField label="Claim Name" value={claimName} onChange={setClaimName} />
           <Picker isRequired label="Choose primary claim" onSelectionChange={setSelectedSecondaryClaimId} items={claims}>
             {(item) => <Item>{item.name}</Item>}
           </Picker>
+          <Flex direction="row" gap={8} alignItems="end">
+            <TextField label="Related Claim Name" onChange={setRelatedClaimSearchText}/>
+            <Button variant="primary" onPress={handleClaimNarrow}>
+              <Search />
+              <Text>Search</Text>
+            </Button>
+          </Flex>
+          <TableView
+            aria-label="Example table with multiple selection"
+            selectionMode="multiple"
+            defaultSelectedKeys={['2', '4']}
+          >
+            <TableHeader>
+              <Column>Claim Text</Column>
+              <Column align="end">First use date</Column>
+            </TableHeader>
+            <TableBody items={rows}>
+              {item => (
+                <Row key={item.id}>
+                  <Cell>{item.claimText}</Cell>
+                  <Cell>{item.firstUseDate}</Cell>
+                </Row>
+              )}
+            </TableBody>
+          </TableView>
         <ButtonGroup>
           <Button type="submit" variant="primary">Save</Button>
           <Button type="reset" variant="secondary">Reset</Button>

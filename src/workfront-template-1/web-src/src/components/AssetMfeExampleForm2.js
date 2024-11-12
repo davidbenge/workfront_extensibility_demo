@@ -13,7 +13,7 @@ import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AssetMfeExampleForm2() {
+function AssetMfeExampleForm2(props) {
   const navigate = useNavigate();
   const [conn, setConn] = useState();
   let [authToken, setAuthToken] = React.useState("");
@@ -28,6 +28,10 @@ function AssetMfeExampleForm2() {
 
   const assetSelectorProps = {
     "imsOrg": imsOrg,
+  };
+
+  const handleGoBack = () => {
+    navigate('/');
   };
 
   const imsProps = {
@@ -81,9 +85,7 @@ function AssetMfeExampleForm2() {
     load(imsProps,assetSelectorProps); //load asset selector
   }, [conn]);
 
-  function handleBackClick(event) {
-    navigate('/', { replace: true });
-  }
+  
 
   function load(pImsProps,pAssetSelectorProps) {
     assetSelectorDialog = document.getElementById('asset-selector-dialog');
@@ -101,7 +103,7 @@ function AssetMfeExampleForm2() {
   return (
     <Flex direction="column" gap="size-100" margin="size-200">
       <Flex direction="row" gap={8}>
-        <Button variant="accent" onPress={handleBackClick} >Back</Button>
+        <Button variant="accent" onPress={handleGoBack} >Back</Button>
       </Flex>
       <dialog id="asset-selector-dialog">
         <div id="asset-selector"></div>

@@ -4,7 +4,7 @@
 
 import React from "react";
 import ErrorBoundary from "react-error-boundary";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ExtensionRegistration from "./ExtensionRegistration";
 import CfExampleForm from "./CfExampleForm";
 import { defaultTheme, Provider} from '@adobe/react-spectrum';
@@ -13,17 +13,18 @@ import CfSelectExampleForm from "./CfSelectExampleForm";
 import AssetMfeExampleForm2 from "./AssetMfeExampleForm2";
 
 function App() {
-
+  const isLocal = window.location.href.indexOf("localhost") > -1 ? true : false; //flag to tell app its running local.
+  
   return (
     <Provider theme={defaultTheme} colorScheme="light">
       <Router>
         <Routes>    
-          <Route index element={<ExtensionRegistration />} />    
-          <Route exact path="index.html" element={<ExtensionRegistration />}    />    
-          <Route exact path="/asset_select_example_form" element={<AssetMfeExampleForm />} />   
-          <Route exact path="/asset_select_example_form2" element={<AssetMfeExampleForm2 />} /> 
-          <Route exact path="/cf_example_form" element={<CfExampleForm />} /> 
-          <Route exact path="/cf_select_example_form" element={<CfSelectExampleForm />} />   
+          <Route index element={<ExtensionRegistration isLocal={isLocal}/>} />    
+          <Route exact path="index.html" element={<ExtensionRegistration isLocal={isLocal} />}    />    
+          <Route exact path="asset_select_example_form" element={<AssetMfeExampleForm isLocal={isLocal}/>} />   
+          <Route exact path="asset_select_example_form2" element={<AssetMfeExampleForm2 isLocal={isLocal}/>} /> 
+          <Route exact path="cf_example_form" element={<CfExampleForm isLocal={isLocal}/>} /> 
+          <Route exact path="cf_select_example_form" element={<CfSelectExampleForm isLocal={isLocal}/>} />   
         </Routes>
       </Router>
     </Provider>

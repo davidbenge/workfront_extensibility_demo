@@ -13,7 +13,7 @@ import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AssetMfeExampleForm() {
+function AssetMfeExampleForm(props) {
   const navigate = useNavigate("");
   const [conn, setConn] = useState("");
   const [authToken, setAuthToken] = useState("");
@@ -21,9 +21,10 @@ function AssetMfeExampleForm() {
   const [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
   const [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463136.adobeaemcloud.com");
 
-  function handleBackClick(event) {
-    navigate('/', { replace: true });
-  }
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
   useEffect(() => {
     const iife = async () => {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
@@ -74,7 +75,7 @@ function AssetMfeExampleForm() {
   return (
     <Flex direction="column" gap="size-100" margin="size-200">
       <Flex direction="row" gap={8}>
-        <Button variant="accent" onPress={handleBackClick} >Back</Button>
+        <Button variant="accent" onPress={handleGoBack} >Back</Button>
       </Flex>
       <div id="asset-selector-container"></div>
     </Flex>
