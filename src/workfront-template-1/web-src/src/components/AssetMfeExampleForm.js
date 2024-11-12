@@ -12,6 +12,7 @@ import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+//import { AssetSelector } from 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/@assets/selectors/index.js';
 
 function AssetMfeExampleForm(props) {
   const navigate = useNavigate("");
@@ -20,12 +21,14 @@ function AssetMfeExampleForm(props) {
   const [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   const [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
   const [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463136.adobeaemcloud.com");
+  let assetSelectorProps = {};
 
   const handleGoBack = () => {
     navigate('/');
   };
 
   useEffect(() => {
+    
     const iife = async () => {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
         const connection = await attach({
@@ -47,7 +50,7 @@ function AssetMfeExampleForm(props) {
     
     
       // imsOrg and imsToken are required for authentication in Adobe application
-      const assetSelectorProps = {
+      assetSelectorProps = {
         ordId: imsOrg,
         imsToken: auth.imsToken,
         apiKey: imsClientId,
@@ -55,7 +58,7 @@ function AssetMfeExampleForm(props) {
         //handleSelection: (assets: SelectedAssetType[]) => {},
       };
       
-      initAssetSelector(assetSelectorProps);
+      //initAssetSelector(assetSelectorProps);
     }
   }, [conn]);
 
@@ -72,14 +75,7 @@ function AssetMfeExampleForm(props) {
     PureJSSelectors.renderAssetSelector(container, assetSelectorProps);
   }
 
-  return (
-    <Flex direction="column" gap="size-100" margin="size-200">
-      <Flex direction="row" gap={8}>
-        <Button variant="accent" onPress={handleGoBack} >Back</Button>
-      </Flex>
-      <div id="asset-selector-container"></div>
-    </Flex>
-  );
+  return <AssetSelectorWithAuthFlow {...assetSelectorProps} />
 }
 
 export default AssetMfeExampleForm;

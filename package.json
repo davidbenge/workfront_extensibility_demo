@@ -11,6 +11,7 @@
     "@adobe/workfront-ui-ext-tpl": "^0.0.5",
     "@react-spectrum/list": "^3.0.0-rc.0",
     "@spectrum-icons/workflow": "^3.2.0",
+    "axios": "^1.7.7",
     "chalk": "^4",
     "core-js": "^3.6.4",
     "node-fetch": "^2.6.0",
@@ -19,7 +20,10 @@
     "react-dom": "^16.13.1",
     "react-error-boundary": "^1.2.5",
     "react-router-dom": "^6.3.0",
-    "regenerator-runtime": "^0.13.5"
+    "regenerator-runtime": "^0.13.5",
+    "@aem-sites/content-fragment-selector": "file:/./local_modules/content-fragment-selector-0.3.16.tgz",
+    "@assets/microfrontend": "file:/./local_modules/microfrontend-0.15.0.tgz",
+    "@identity/imslib": "file:/./local_modules/imslib-0.39.0.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",

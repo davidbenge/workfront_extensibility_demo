@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import AEMHeadless from "@adobe/aem-headless-client-js";
 import { useParams, navigate } from "react-router-dom";
 import Search from "@spectrum-icons/workflow/Search";
+import axios from "axios";
 
 function CfSelectExampleForm(props) {
   const navigate = useNavigate();
@@ -27,20 +28,6 @@ function CfSelectExampleForm(props) {
   let [claimName, setClaimName] = React.useState("");
   const [relatedClaimSearchText, setRelatedClaimSearchText] = useState("");
 
-  let columns = [
-    {name: 'Name', uid: 'name'},
-    {name: 'Type', uid: 'type'},
-    {name: 'Date Modified', uid: 'date'}
-  ];
-  
-  let rows = [
-    {id: 1, firstUseDate: '6/7/2020', claimText: 'Clinically Proven to Reduce Symptoms by 50% in Just 4 Weeks!'},
-    {id: 2, firstUseDate: '4/7/2021', claimText: 'Trusted by Healthcare Professionals Worldwide for Over 20 Years'},
-    {id: 3, firstUseDate: '11/20/2010', claimText: 'Experience Relief with Our Fast-Acting Formula – Starts Working in Just 30 Minutes!'},
-    {id: 4, firstUseDate: '1/18/2016', claimText: 'Over 90% Patient Satisfaction Rate – Join the Thousands Who Trust Our Medication'},
-    {id: 5, firstUseDate: '1/18/2016', claimText: 'Backed by Cutting-Edge Research and Innovation – Your Health, Our Priority'}
-  ];
-
   const handleGoBack = () => {
     navigate('/');
   };
@@ -48,9 +35,25 @@ function CfSelectExampleForm(props) {
   const handleClaimNarrow = (e) => {
     e.preventDefault;
     console.info("claim narrow value",relatedClaimSearchText);
+
+    //TODO: call SITEs CF search curl -i -X GET \
+    // 'https://{bucket}.adobeaemcloud.com/adobe/sites/cf/fragments/search?cursor=string&limit=1&query=%22{%0A%20%20%20%22filter%22%3A%20{%0A%20%20%20%20%20%20%20%22created%22%3A{%0A%20%20%20%20%20%20%20%20%20%20%20%22by%22%3A%20%5B%22admin%22%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22after%22%3A%20%222019-10-12T07%3A20%3A50.52Z%22%0A%20%20%20%20%20%20%20}%2C%0A%20%20%20%0A%20%20%20%20%20%20%20%22path%22%3A%20%22%2Fcontent%2Fdam%22%2C%0A%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%22modelIds%22%3A%20%5B%22L2NvbmYvd2tuZC1zaGFyZWQvc2V0dGluZ3MvZGFtL2NmbS9tb2RlbHMvYXV0aG9y%22%5D%0A%20%20%20}%0A}%22' \
+    // -H 'Authorization: Bearer <YOUR_JWT_HERE>'
+
+    //update table results
   };
 
   useEffect(() => {
+    // Init claims
+    const fakeClaims = [
+      {id: 1, firstUseDate: '6/7/2020', claimText: 'Clinically Proven to Reduce Symptoms by 50% in Just 4 Weeks!'},
+      {id: 2, firstUseDate: '4/7/2021', claimText: 'Trusted by Healthcare Professionals Worldwide for Over 20 Years'},
+      {id: 3, firstUseDate: '11/20/2010', claimText: 'Experience Relief with Our Fast-Acting Formula – Starts Working in Just 30 Minutes!'},
+      {id: 4, firstUseDate: '1/18/2016', claimText: 'Over 90% Patient Satisfaction Rate – Join the Thousands Who Trust Our Medication'},
+      {id: 5, firstUseDate: '1/18/2016', claimText: 'Backed by Cutting-Edge Research and Innovation – Your Health, Our Priority'}
+    ];
+    setClaims(fakeClaims);
+
     const iife = async () => {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
         const connection = await attach({
@@ -137,7 +140,7 @@ function CfSelectExampleForm(props) {
             {(item) => <Item>{item.name}</Item>}
           </Picker>
           <Flex direction="row" gap={8} alignItems="end">
-            <TextField label="Related Claim Name" onChange={setRelatedClaimSearchText}/>
+            <TextField label="Related Claim Search" onChange={setRelatedClaimSearchText}/>
             <Button variant="primary" onPress={handleClaimNarrow}>
               <Search />
               <Text>Search</Text>
@@ -152,7 +155,7 @@ function CfSelectExampleForm(props) {
               <Column>Claim Text</Column>
               <Column align="end">First use date</Column>
             </TableHeader>
-            <TableBody items={rows}>
+            <TableBody items={claims}>
               {item => (
                 <Row key={item.id}>
                   <Cell>{item.claimText}</Cell>

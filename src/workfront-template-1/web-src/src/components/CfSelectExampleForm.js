@@ -5,13 +5,14 @@
  * add in example form for aem asset selector 
  */
 
-import { Text } from "@adobe/react-spectrum";
+import { ActionButton, DialogTrigger, Text } from "@adobe/react-spectrum";
 import { register } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ContentFragmentSelector } from "@aem-sites/content-fragment-selector";
 
 function CfExampleForm(props) {
   const navigate = useNavigate();
@@ -23,18 +24,14 @@ function CfExampleForm(props) {
   const [conn, setConn] = useState();
   let [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   let [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
-  let [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463137.adobeaemcloud.com");
-  const [isOpen, setIsOpen] = useState(false);
+  let [repoId, setRepositoryId] = useState("author-p111858-e1309034.adobeaemcloud.com");
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleGoBack = () => {
     navigate('/');
   };
 
   useEffect(() => {
-    script = document.createElement('script');
-    script.src = "https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js";
-    document.head.appendChild(script)
-
     const iife = async () => {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
         const connection = await attach({
@@ -57,12 +54,44 @@ function CfExampleForm(props) {
   }, [conn]);
 
   return (
-    <>
-    <script src="https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js"></script>
-
-<script>
-  const { renderContentFragmentSelector } = PureJSSelectors;
-</script></>
+    <DialogTrigger type="fullscreen" isOpen={isOpen}>
+        <ActionButton onPress={() => setIsOpen(true)}>Show Fragment Selector</ActionButton>
+        <ContentFragmentSelector
+            orgId={imsOrg}
+            imsToken={authToken}
+            repoId={repoId}
+            isOpen={isOpen}
+            filters={{
+                folder: "/content/dam",
+                status: ["PUBLISHED", "MODIFIED"],
+                tag: [
+                        {
+                            id: "1:",
+                            name: "1",
+                            path: "/content/cq:tags/1",
+                            description: "",
+                        },
+                    ],
+            }}
+            readonlyFilters={{
+                tag: [
+                        {
+                            id: "1:",
+                            name: "1",
+                            path: "/content/cq:tags/1",
+                            description: "",
+                        },
+                    ],
+            }}
+            onDismiss={() => setIsOpen(false)}
+            onSubmit={({ contentFragments, domainNames }) => {
+                const selectedContentFragment = contentFragments[0];
+                const usedDomainName = domainNames[0];
+                const contentFragmentAlert = `Example link: https://${usedDomainName}${selectedContentFragment.path}.cfm.gql.json`;
+                alert(contentFragmentAlert);
+            }}
+        />
+    </DialogTrigger>
   );
 }
 

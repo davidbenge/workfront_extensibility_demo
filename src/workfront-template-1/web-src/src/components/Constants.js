@@ -1,4 +1,4 @@
 module.exports = {
-  extensionId: 'cf-edit',
+  extensionId: 'wf_ext_demos',
   cfFormIcon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAqElEQVR4nO3WQQrDMAxE0bn/sRp6rt9tCQTLbYzH8TzQIpBFBtmKpIjo9ZaEeR2VICxSTeUXJyFBzJCO7NoRBk8nEqTTXeObUR2pHoEEObG5I48JQqaWPMbvaCSIGdKRTplaMl0a/0V2rV2WxqrHBSG7ljym1mgkiBnSkU7VVeNXzB6/d2HWD/HquVpnCaLdjxarBxmNBFm9I5hX02HwkTTq1Y4REfryASIFVNja7HaWAAAAAElFTkSuQmCC',
 }

@@ -12,6 +12,7 @@ dist
 config.json
 .env*
 .aio
+.npmrc
 
 # Adobe I/O console config
 console.json
