@@ -42,6 +42,15 @@ function ExtensionRegistration(props) {
         url: "/index.html#/asset_select_example_form"
       },
       {
+        id: (isLocal ? 'assetSelectExample2_LDEV' : 'assetSelectExample2'),
+        label: (isLocal ? 'Asset Select Form Example 2 LDEV' : 'Asset Select Form Example 2'),
+        icon: cfFormIcon,
+        url: "/index.html#/asset_select_example_form2"
+      }
+    ];
+
+    const secondaryExtensionConfig = [
+      {
         id: (isLocal ? 'cfExampleForm1_LDEV' : 'cfExampleForm1'),
         label: (isLocal ? 'CF Form Example LDEV' : 'CF Form Example'),
         icon: cfFormIcon,
@@ -52,15 +61,6 @@ function ExtensionRegistration(props) {
         label:  (isLocal ? 'CF MFE Select Example LDEV' : 'CF MFE Select Example'),
         icon: cfFormIcon,
         url: "/index.html#/cf_select_example_form"
-      }
-    ];
-
-    const secondaryExtensionConfig = [
-      {
-        id: (isLocal ? 'assetSelectExample2_LDEV' : 'assetSelectExample2'),
-        label: (isLocal ? 'Asset Select Form Example 2 LDEV' : 'Asset Select Form Example 2'),
-        icon: cfFormIcon,
-        url: "/index.html#/asset_select_example_form2"
       }
     ];
 
@@ -76,6 +76,18 @@ function ExtensionRegistration(props) {
           TASK:{
             getItems(){
               return secondaryExtensionConfig
+            }
+          },
+          PROJECT:{
+            getItems(){
+              return [
+                {
+                  id: (isLocal ? 'projectForm1_LDEV' : 'projectForm1'),
+                  label: (isLocal ? 'Project Form Example LDEV' : 'Project Form Example'),
+                  icon: cfFormIcon,
+                  url: "/index.html#/cf_example_form"
+                }
+              ]
             }
           }
         }

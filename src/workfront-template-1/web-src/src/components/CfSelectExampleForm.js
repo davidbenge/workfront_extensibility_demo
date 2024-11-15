@@ -6,7 +6,7 @@
  */
 
 import { ActionButton, DialogTrigger, Text } from "@adobe/react-spectrum";
-import { register } from "@adobe/uix-guest";
+import { attach } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
@@ -24,8 +24,11 @@ function CfExampleForm(props) {
   const [conn, setConn] = useState();
   let [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   let [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
-  let [repoId, setRepositoryId] = useState("author-p111858-e1309034.adobeaemcloud.com");
+  let [repoId, setRepositoryId] = useState("author-p111858-e1309055.adobeaemcloud.net");
   const [isOpen, setIsOpen] = useState(true);
+  const [localNavVisible, setLocalNavVisible] = useState(true);
+  const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.net"; //STAGE
+//const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.net"; //PROD
 
   const handleGoBack = () => {
     navigate('/');
@@ -44,11 +47,12 @@ function CfExampleForm(props) {
 
   useEffect(() => {
     if (conn) {
+      setLocalNavVisible(false); // hide the local nav
       // Using the connection created above, grab the document details from the host tunnel.
       //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
       const auth = conn?.sharedContext?.get("auth");
       setAuthToken(auth.imsToken); // set the auth token 
-      console.info("authToken passed down from WF", authToken); //auth token passed down from hosting workfront.
+      console.info("authToken passed down from WF", auth.imsToken); //auth token passed down from hosting workfront.
       console.info("HOST", JSON.stringify(conn?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
     }
   }, [conn]);
