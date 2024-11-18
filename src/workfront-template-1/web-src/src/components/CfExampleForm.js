@@ -59,17 +59,39 @@ function CfSelectExampleForm(props) {
         endpoint: "/graphql",
         auth: `${authToken}` });
     }
+    //https://author-p111858-e1309034.adobeaemcloud.com/graphql/execute.json/regulatory-review/getListClaimsByBrand
+    //https://author-p111858-e1309034.adobeaemcloud.com/graphql/execute.json/regulatory-review/getListClaimsByBrand%3Bbrand%3Dregulatory%3Asereniday
 
     const runQuery = async () => {
-      let getData
       try {
-        getData = await aemHeadlessClient.runPersistedQuery("regulatory-review/getListClaimsByBrand", {brandId: e});
-      } catch (e) {
-        console.error(e);
+        const queryParam = encodeURIComponent(`;brand=${e}`);
+        const callUrl = `${AEM_HOST}/graphql/execute.json/regulatory-review/getListClaimsByBrand${queryParam}`;
+        console.log("queryParam",queryParam);
+        const response = await fetch(callUrl,{
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization":`Bearer ${authToken}`
+          }
+        });
+        if(response){
+          const data = await response.json();
+          console.log(JSON.stringify(data, null, 2));
+        }
+        console.info("call main and no results");
+      } catch (callError) {
+        console.error(callError);
       }
 
-      console.log(JSON.stringify(getData, null, 2));
-      setClaims(getData.data.claimList.items);
+      /*
+      let getData
+      try {
+        getData = await aemHeadlessClient.runPersistedQuery("regulatory-review/getListClaimsByBrand", {brand: e});
+        console.log(JSON.stringify(getData, null, 2));
+        setClaims(getData.data.claimList.items);
+      } catch (callError) {
+        console.error(callError);
+      }
+      */
     }
     runQuery();
   };
