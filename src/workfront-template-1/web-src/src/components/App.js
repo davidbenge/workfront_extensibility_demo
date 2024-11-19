@@ -6,7 +6,7 @@ import React from "react";
 import ErrorBoundary from "react-error-boundary";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ExtensionRegistration from "./ExtensionRegistration";
-import CfExampleForm from "./CfExampleForm";
+import CfSelectTableExampleForm from "./CfSelectTableExampleForm.js";
 import { defaultTheme, Provider} from '@adobe/react-spectrum';
 import AssetMfeExampleForm from "./AssetMfeExampleForm";
 import CfSelectExampleForm from "./CfSelectExampleForm";
@@ -23,7 +23,7 @@ function App() {
           <Route exact path="index.html" element={<ExtensionRegistration isLocal={isLocal} />}    />    
           <Route exact path="asset_select_example_form" element={<AssetMfeExampleForm isLocal={isLocal}/>} />   
           <Route exact path="asset_select_example_form2" element={<AssetMfeExampleForm2 isLocal={isLocal}/>} /> 
-          <Route exact path="cf_example_form" element={<CfExampleForm isLocal={isLocal}/>} /> 
+          <Route exact path="cf_select_table_example_form" element={<CfSelectTableExampleForm isLocal={isLocal}/>} /> 
           <Route exact path="cf_select_example_form" element={<CfSelectExampleForm isLocal={isLocal}/>} />   
         </Routes>
       </Router>

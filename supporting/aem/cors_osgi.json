@@ -1,6 +1,11 @@
 {
-    "alloworigin": ["*"],
-    "allowedpaths": ["*"],
+    "alloworigin": ["https://localhost:9080","https://localhost.corp.adobe.com:9080","https://27200-884coffeeheron-stage.adobeio-static.net","https://27200-884coffeeheron.adobeio-static.net"],
+    "alloworiginregexp":[],
+    "allowedpaths": [
+      "/graphql/execute.json.*",
+      "/content/experience-fragments/.*",
+      "/adobe/sites/.*"
+    ],
     "supportedheaders": [
       "Authorization",
       "Origin",
@@ -8,11 +13,9 @@
       "X-Requested-With",
       "Content-Type",
       "Access-Control-Request-Method",
-      "Access-Control-Request-Headers",
-      "Access-Control-Allow-Origin"
+      "Access-Control-Request-Headers"
     ],
     "supportedmethods": ["GET","HEAD","POST","OPTIONS"],
-    "alloworiginregexp": [],
     "maxage:Integer": 1800,
     "supportscredentials": true,
     "exposedheaders":[ "" ]

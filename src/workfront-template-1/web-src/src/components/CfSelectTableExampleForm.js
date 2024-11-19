@@ -1,17 +1,9 @@
 /*
  * <license header>
  *
- * add in CF fragment selector 
- * add in example form for aem asset selector 
+ * select a value and see data from CF persistant gql query
  *
  * 
- * const response = await fetch('https://author-p142461-e1463137.adobeaemcloud.com/graphql/execute.json/global/allClaims',{
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":`Bearer ${authToken}`
-        }
-       });
-      const data = await response.json();
  */
 
 import { Text } from "@adobe/react-spectrum";
@@ -19,18 +11,18 @@ import { attach } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField, ListBox, Cell, Column, Row, TableView, TableBody, TableHeader } from '@adobe/react-spectrum';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AEMHeadless from "@adobe/aem-headless-client-js";
+/*import AEMHeadless from "@adobe/aem-headless-client-js";*/
 import { useParams, navigate } from "react-router-dom";
 import Search from "@spectrum-icons/workflow/Search";
 import axios from "axios";
-const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.net"; //STAGE
-//const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.net"; //PROD
+import JoditEditor from 'jodit-react';
+//const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.com"; //STAGE
+const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.com"; //PROD
 
 function CfSelectExampleForm(props) {
   const navigate = useNavigate();
-  let aemHeadlessClient; // AEM Headless client
   const [authToken, setAuthToken] = React.useState("");
   const [conn, setConn] = useState();
   // CF claim options
@@ -41,8 +33,8 @@ function CfSelectExampleForm(props) {
 
   let [brands, setBrands] = React.useState([]); // Brand options
   const demoDataBrands = [
-    {id: "regulatory:trumantic", name: 'Trumantic'},
-    {id: "regulatory:sereniday", name: 'SereniDay'}
+    {id: "regulatory-brand:trumantic", name: 'Trumantic'},
+    {id: "regulatory-brand:sereniday", name: 'SereniDay'}
   ];
 
   const handleGoBack = () => {
@@ -53,18 +45,10 @@ function CfSelectExampleForm(props) {
     console.info("brand change",e);
     console.info("authToken",authToken);
 
-    if(!aemHeadlessClient){
-      aemHeadlessClient = new AEMHeadless({
-        serviceURL: AEM_HOST,
-        endpoint: "/graphql",
-        auth: `${authToken}` });
-    }
-    //https://author-p111858-e1309034.adobeaemcloud.com/graphql/execute.json/regulatory-review/getListClaimsByBrand
-    //https://author-p111858-e1309034.adobeaemcloud.com/graphql/execute.json/regulatory-review/getListClaimsByBrand%3Bbrand%3Dregulatory%3Asereniday
-
     const runQuery = async () => {
       try {
         const queryParam = encodeURIComponent(`;brand=${e}`);
+        //const queryParam = `;brand=${e}`;
         const callUrl = `${AEM_HOST}/graphql/execute.json/regulatory-review/getListClaimsByBrand${queryParam}`;
         console.log("queryParam",queryParam);
         const response = await fetch(callUrl,{
@@ -76,22 +60,13 @@ function CfSelectExampleForm(props) {
         if(response){
           const data = await response.json();
           console.log(JSON.stringify(data, null, 2));
+          //update the data grid
+          setClaims(data.data.claimList.items);
         }
         console.info("call main and no results");
       } catch (callError) {
         console.error(callError);
       }
-
-      /*
-      let getData
-      try {
-        getData = await aemHeadlessClient.runPersistedQuery("regulatory-review/getListClaimsByBrand", {brand: e});
-        console.log(JSON.stringify(getData, null, 2));
-        setClaims(getData.data.claimList.items);
-      } catch (callError) {
-        console.error(callError);
-      }
-      */
     }
     runQuery();
   };
@@ -142,52 +117,29 @@ function CfSelectExampleForm(props) {
         borderColor="dark"
         borderRadius="medium"
         padding="size-250">
-          {
-            // <Text>Primary Claim {claimName}</Text>
-          }
         <Form onSubmit={onSubmit} >
-          {
-          //<TextField label="Claim Name" value={claimName} onChange={setClaimName} />
-          }
           <Picker isRequired label="Brand" onSelectionChange={handleBrandChange} items={brands}>
             {(item) => <Item key={item.id}>{item.name}</Item>}
           </Picker>
-          {
-            /*
-          <Flex direction="row" gap={8} alignItems="end">
-            <TextField label="Related Claim Search" onChange={setRelatedClaimSearchText}/>
-            <Button variant="primary" onPress={handleClaimNarrow}>
-              <Search />
-              <Text>Search</Text>
-            </Button>
-          </Flex>
-          */
-          }
           <TableView
             aria-label="Example table with multiple selection"
             selectionMode="single"
           >
             <TableHeader>
-              <Column>Claim Text</Column>
-              <Column align="end">First use date</Column>
+              <Column>Claim text</Column>
+              <Column>Claim description</Column>
+              <Column align="end">indication</Column>
             </TableHeader>
             <TableBody items={claims}>
               {item => (
-                <Row key={item.id}>
-                  <Cell>{item.claimText}</Cell>
-                  <Cell>{item.firstUseDate}</Cell>
+                <Row key={item._id}>
+                  <Cell>{item.title}</Cell>
+                  <Cell>{item.description.plaintext}</Cell>
+                  <Cell>{item.indication}</Cell>
                 </Row>
               )}
             </TableBody>
           </TableView>
-          { 
-          /*
-            <ButtonGroup>
-              <Button type="submit" variant="primary">Save</Button>
-              <Button type="reset" variant="secondary">Reset</Button>
-            </ButtonGroup>
-          */
-          }
         </Form>
       </View>
     </Flex>

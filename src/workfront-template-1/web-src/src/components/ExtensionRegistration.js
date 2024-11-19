@@ -21,8 +21,8 @@ function ExtensionRegistration(props) {
     navigate('/asset_select_example_form2', { replace: true });
   }
 
-  function handleNavCfFormClick(event) {
-    navigate('/cf_example_form', { replace: true });
+  function handleNavCfTableFormClick(event) {
+    navigate('/cf_select_table_example_form', { replace: true });
   }
 
   function handleNavCfSelectFormClick(event) {
@@ -51,10 +51,10 @@ function ExtensionRegistration(props) {
 
     const secondaryExtensionConfig = [
       {
-        id: (isLocal ? 'cfExampleForm1_LDEV' : 'cfExampleForm1'),
-        label: (isLocal ? 'CF Form Example LDEV' : 'CF Form Example'),
+        id: (isLocal ? 'cfExampleTableForm1_LDEV' : 'cfExampleTableForm1'),
+        label: (isLocal ? 'CF Table Form Example LDEV' : 'CF Table Form Example'),
         icon: cfFormIcon,
-        url: "/index.html#/cf_example_form"
+        url: "/index.html#/cf_select_table_example_form"
       },
       {
         id: (isLocal ? 'cfExampleForm2_LDEV' : 'cfExampleForm2'),
@@ -104,7 +104,7 @@ function ExtensionRegistration(props) {
     <Flex wrap gap="size-200" margin="size-200">
       <Button variant="accent" onPress={handleNavAssetClick}>Asset Select Demo passed auth{(isLocal ? ' LDEV' : '')}</Button>
       <Button variant="accent" onPress={handleNavAsset2Click}>Asset Select Demo login{(isLocal ? ' LDEV' : '')}</Button>
-      <Button variant="accent" onPress={handleNavCfFormClick}>CF Demo{(isLocal ? ' LDEV' : '')}</Button>
+      <Button variant="accent" onPress={handleNavCfTableFormClick}>CF Form Table Demo{(isLocal ? ' LDEV' : '')}</Button>
       <Button variant="accent" onPress={handleNavCfSelectFormClick}>CF MFE Select Demo{(isLocal ? ' LDEV' : '')}</Button>
     </Flex>
   )
