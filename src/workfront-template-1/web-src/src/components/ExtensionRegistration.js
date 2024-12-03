@@ -10,24 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Flex, View, Button, TextField } from '@adobe/react-spectrum';
 
 function ExtensionRegistration(props) {
-  const navigate = useNavigate();
   const isLocal = props.isLocal; //flag to tell app its running local.
-
-  function handleNavAssetClick(event) {
-    navigate('/asset_select_example_form', { replace: true });
-  }
-
-  function handleNavAsset2Click(event) {
-    navigate('/asset_select_example_form2', { replace: true });
-  }
-
-  function handleNavCfTableFormClick(event) {
-    navigate('/cf_select_table_example_form', { replace: true });
-  }
-
-  function handleNavCfSelectFormClick(event) {
-    navigate('/cf_select_example_form', { replace: true });
-  }
 
   const init = async () => {
     // Extension item config array. We keep this as an array because we were toggling the extension id and name 
@@ -89,10 +72,23 @@ function ExtensionRegistration(props) {
                 }
               ]
             }
+          },
+          DOCUMENTS:{
+            getItems(){
+              return [
+                {
+                  id: (isLocal ? 'documentExpress_LDEV' : 'documentExpress'),
+                  label: (isLocal ? 'Open In Express LDEV' : 'Open In Express'),
+                  icon: cfFormIcon,
+                  url: "/index.html#/open_in_express"
+                }
+              ]
+            }
           }
         }
       }
     });
+    //can add more secondary items for PROJECT, TASK, ISSUE, PORTFOLIO, PROGRAM with same example
 
     // dumping config to console for easy debugging of registration conflicts
     console.info("Main Extension registration",JSON.stringify(mainExtensionConfig,null,2));
@@ -100,14 +96,7 @@ function ExtensionRegistration(props) {
   };
   init().catch(console.error);
 
-  return (
-    <Flex wrap gap="size-200" margin="size-200">
-      <Button variant="accent" onPress={handleNavAssetClick}>Asset Select Demo passed auth{(isLocal ? ' LDEV' : '')}</Button>
-      <Button variant="accent" onPress={handleNavAsset2Click}>Asset Select Demo login{(isLocal ? ' LDEV' : '')}</Button>
-      <Button variant="accent" onPress={handleNavCfTableFormClick}>CF Form Table Demo{(isLocal ? ' LDEV' : '')}</Button>
-      <Button variant="accent" onPress={handleNavCfSelectFormClick}>CF MFE Select Demo{(isLocal ? ' LDEV' : '')}</Button>
-    </Flex>
-  )
+  return (<Text>Extension Registration</Text>);
 }
 
 export default ExtensionRegistration;
