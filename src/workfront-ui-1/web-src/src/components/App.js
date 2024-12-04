@@ -5,12 +5,12 @@
 import React from "react";
 import ErrorBoundary from "react-error-boundary";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import ExtensionRegistration from "./ExtensionRegistration";
+import ExtensionRegistration from "./ExtensionRegistration.js";
 import CfSelectTableExampleForm from "./CfSelectTableExampleForm.js";
 import { defaultTheme, Provider} from '@adobe/react-spectrum';
-import AssetMfeExampleForm from "./AssetMfeExampleForm";
-import CfSelectExampleForm from "./CfSelectExampleForm";
-import AssetMfeExampleForm2 from "./AssetMfeExampleForm2";
+import AssetMfeExampleForm from "./AssetMfeExampleForm.js";
+import CfSelectExampleForm from "./CfSelectExampleForm.js";
+import AssetMfeExampleForm2 from "./AssetMfeExampleForm2.js";
 import DocumentExpressView from "./DocumentExpressView.js";
 const expressApiKey = `${process.env.EXPRESS_API_KEY}`
 const imsOrg = `${process.env.IMS_ORG}`
