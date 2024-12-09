@@ -32,21 +32,6 @@ function ExtensionRegistration(props) {
       }
     ];
 
-    const secondaryExtensionConfig = [
-      {
-        id: (isLocal ? 'cfExampleTableForm1_LDEV' : 'cfExampleTableForm1'),
-        label: (isLocal ? 'CF Table Form Example LDEV' : 'CF Table Form Example'),
-        icon: cfFormIcon,
-        url: "/index.html#/cf_select_table_example_form"
-      },
-      {
-        id: (isLocal ? 'cfExampleForm2_LDEV' : 'cfExampleForm2'),
-        label:  (isLocal ? 'CF MFE Select Example LDEV' : 'CF MFE Select Example'),
-        icon: cfFormIcon,
-        url: "/index.html#/cf_select_example_form"
-      }
-    ];
-
     const guestConnection = await register({
       methods:{
         id: extensionId,
@@ -58,7 +43,26 @@ function ExtensionRegistration(props) {
         secondaryNav:{
           TASK:{
             getItems(){
-              return secondaryExtensionConfig
+              return [
+                {
+                  id: (isLocal ? 'cfExampleTableForm1_LDEV' : 'cfExampleTableForm1'),
+                  label: (isLocal ? 'CF Table Form Example LDEV' : 'CF Table Form Example'),
+                  icon: cfFormIcon,
+                  url: "/index.html#/cf_select_table_example_form"
+                },
+                {
+                  id: (isLocal ? 'cfExampleForm2_LDEV' : 'cfExampleForm2'),
+                  label:  (isLocal ? 'CF MFE Select Example LDEV' : 'CF MFE Select Example'),
+                  icon: cfFormIcon,
+                  url: "/index.html#/cf_select_example_form"
+                },
+                {
+                  id: (isLocal ? 'showTaskValues_LDEV' : 'showTaskValues'),
+                  label:  (isLocal ? 'Show Task Values LDEV' : 'Show Task Values'),
+                  icon: cfFormIcon,
+                  url: "/index.html#/show_task_values"
+                }
+              ]
             }
           },
           PROJECT:{
@@ -90,9 +94,6 @@ function ExtensionRegistration(props) {
     });
     //can add more secondary items for PROJECT, TASK, ISSUE, PORTFOLIO, PROGRAM with same example
 
-    // dumping config to console for easy debugging of registration conflicts
-    console.info("Main Extension registration",JSON.stringify(mainExtensionConfig,null,2));
-    console.info("Secondary Extension registration",JSON.stringify(secondaryExtensionConfig,null,2));
   };
   init().catch(console.error);
 

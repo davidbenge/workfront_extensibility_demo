@@ -79,8 +79,13 @@ function CfSelectExampleForm(props) {
         // "attach" the guest application to the host. This creates a "tunnel" from the host app that allows data to be passed to the iframe running this app.
         const connection = await attach({
             id: extensionId,
+        })
+        .then((connection) => {
+            setConn(connection);
+        })
+        .catch((error) => {
+            console.error("Error registering with guest server:", error);
         });
-        setConn(connection);
     };
     iife();
   }, []);
@@ -94,6 +99,9 @@ function CfSelectExampleForm(props) {
       setAuthToken(auth.imsToken); // set the auth token 
       console.info("authToken passed down from WF", auth.imsToken); //auth token passed down from hosting workfront.
       console.info("HOST", JSON.stringify(conn?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
+    
+      const objCode = conn?.sharedContext?.get("objCode");
+      console.log("###### objCode ######", objCode);
     }
   }, [conn]);
 

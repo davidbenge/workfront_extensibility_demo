@@ -33,11 +33,10 @@ function DocumentExpressView(props) {
         const connection = await attach({
             id: extensionId,
         });
+        console.debug("##### connection #####",JSON.stringify(connection,null,2));
         setConn(connection);
     };
     iife();
-
-    initExpress();
 
   }, []);
 
@@ -46,9 +45,14 @@ function DocumentExpressView(props) {
       // Using the connection created above, grab the document details from the host tunnel.
       //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
       const auth = conn?.sharedContext?.get("auth");
+      const objCode = conn?.sharedContext?.get("objCode");
       setAuthToken(auth.imsToken); // set the auth token 
+      console.info("conn.sharedContextpassed down from WF - post ", JSON.stringify(conn.sharedContext,null,2)); //auth token passed down from hosting workfront.
+      console.info("objCode passed down from WF", objCode); // obj code passed down from hosting workfront.
       console.info("authToken passed down from WF", authToken); //auth token passed down from hosting workfront.
       console.info("HOST", JSON.stringify(conn?.sharedContext?.get("host"),null, 2)); //host context passed down from hosting workfront.
+      
+      initExpress();
     }
   }, [conn]);
 
