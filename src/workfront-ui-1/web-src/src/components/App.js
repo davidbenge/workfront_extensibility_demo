@@ -1,9 +1,6 @@
 /*
  * <license header>
  */
-
-import React, { useEffect } from "react";
-import ErrorBoundary from "react-error-boundary";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ExtensionRegistration from "./ExtensionRegistration.js";
 import CfSelectTableExampleForm from "./CfSelectTableExampleForm.js";
@@ -12,7 +9,6 @@ import AssetMfeExampleForm from "./AssetMfeExampleForm.js";
 import CfSelectExampleForm from "./CfSelectExampleForm.js";
 import AssetMfeExampleForm2 from "./AssetMfeExampleForm2.js";
 import DocumentExpressView from "./DocumentExpressView.js";
-import { register } from "@adobe/uix-guest"; //import the register function from the uix-guest module
 import ShowValues from "./ShowValues.js";
 const expressApiKey = `${process.env.EXPRESS_API_KEY}`
 const imsOrg = `${process.env.IMS_ORG}` | undefined

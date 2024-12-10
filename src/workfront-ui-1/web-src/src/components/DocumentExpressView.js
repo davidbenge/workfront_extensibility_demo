@@ -33,7 +33,6 @@ function DocumentExpressView(props) {
         const connection = await attach({
             id: extensionId,
         });
-        console.debug("##### connection #####",JSON.stringify(connection,null,2));
         setConn(connection);
     };
     iife();

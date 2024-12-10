@@ -12,7 +12,6 @@ import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField, ListBox, Cell, Column, Row, TableView, TableBody, TableHeader } from '@adobe/react-spectrum';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 /*import AEMHeadless from "@adobe/aem-headless-client-js";*/
 import { useParams, navigate } from "react-router-dom";
 import Search from "@spectrum-icons/workflow/Search";
@@ -22,7 +21,6 @@ import JoditEditor from 'jodit-react';
 const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.com"; //PROD
 
 function CfSelectExampleForm(props) {
-  const navigate = useNavigate();
   const [authToken, setAuthToken] = React.useState("");
   const [conn, setConn] = useState();
   // CF claim options
@@ -36,10 +34,6 @@ function CfSelectExampleForm(props) {
     {id: "regulatory-brand:trumantic", name: 'Trumantic'},
     {id: "regulatory-brand:sereniday", name: 'SereniDay'}
   ];
-
-  const handleGoBack = () => {
-    navigate('/');
-  };
 
   const handleBrandChange = (e) => {
     console.info("brand change",e);
@@ -116,11 +110,6 @@ function CfSelectExampleForm(props) {
   return (
     <>
     <Flex direction="column" gap="size-100" margin="size-200">
-      {props.isLocal ? (
-      <Flex direction="row" gap={8} isHidden={localNavVisible}>
-        <Button variant="accent" onPress={handleGoBack} >Back</Button>
-      </Flex>
-      ) : ('')}
       <View borderWidth="thin"
         borderColor="dark"
         borderRadius="medium"
