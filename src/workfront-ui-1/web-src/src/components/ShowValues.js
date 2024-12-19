@@ -43,12 +43,14 @@ function ShowValues(props) {
       //  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
       const auth = context?.get("auth");
       const objCode = context?.get("objCode");
+      const objID = context?.get("objID");
       const hostname = context?.get("hostname");
       const user = (conn?.sharedContext?.get("user")); // {ID: '1', email: 'test@aaa.com'}
       setAuthToken(auth.imsToken); // set the auth token
 
       const contextValues = [
         { name: "objCode", value: objCode, id: 1 },
+        { name: "objID", value: objID, id: 6 },
         { name: "hostname", value: hostname, id: 2 },
         { name: "user.ID", value: user.ID, id: 4 },
         { name: "user.email", value: user.email, id: 5 },

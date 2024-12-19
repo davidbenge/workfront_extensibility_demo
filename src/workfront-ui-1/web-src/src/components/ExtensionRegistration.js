@@ -57,8 +57,8 @@ function ExtensionRegistration(props) {
                   url: "/index.html#/cf_select_example_form"
                 },
                 {
-                  id: (isLocal ? 'showTaskValues_LDEV' : 'showTaskValues'),
-                  label:  (isLocal ? 'Show Task Values LDEV' : 'Show Task Values'),
+                  id: (isLocal ? 'showValues_LDEV' : 'showValues'),
+                  label:  (isLocal ? 'Show Values LDEV' : 'Show Values'),
                   icon: cfFormIcon,
                   url: "/index.html#/show_task_values"
                 }
