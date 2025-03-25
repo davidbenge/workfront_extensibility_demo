@@ -6,6 +6,7 @@
     "@adobe/aem-headless-client-js": "^4.0.0",
     "@adobe/aio-sdk": "^3.0.0",
     "@adobe/exc-app": "^0.2.21",
+    "@adobe/generator-add-action-generic": "^1.0.1",
     "@adobe/react-spectrum": "^3.37.1",
     "@adobe/uix-guest": "^0.10.5",
     "@adobe/workfront-ui-ext-tpl": "^0.0.5",

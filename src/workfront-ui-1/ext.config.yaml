@@ -2,8 +2,23 @@ operations:
   view:
     - type: web
       impl: index.html
+actions: actions
 web: web-src
 hooks:
   pre-app-run: node node_modules/@adobe/uix-guest/scripts/generate-metadata.js
   pre-app-build: node node_modules/@adobe/uix-guest/scripts/generate-metadata.js
   post-app-deploy: ./hooks/post-deploy.js
+runtimeManifest:
+  packages:
+    workfront-ui-1:
+      license: Apache-2.0
+      actions:
+        getdata:
+          function: actions/getdata/index.js
+          web: 'yes'
+          runtime: nodejs:20
+          inputs:
+            LOG_LEVEL: debug
+          annotations:
+            require-adobe-auth: false
+            final: true
