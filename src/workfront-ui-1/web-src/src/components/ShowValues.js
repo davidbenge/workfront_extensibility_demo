@@ -18,11 +18,19 @@ import {
   TableBody,
 } from "@adobe/react-spectrum";
 import { useState, useEffect } from "react";
+import authTokenManager from './utils/authTokenManager';
 
 function ShowValues(props) {
   const [contextProperties, setContextProperties] = useState([]);
   const [conn, setConn] = useState("");
-  const [authToken, setAuthToken] = useState("");
+  const [authToken, setAuthTokenState] = useState("");
+  // Custom setter that uses authTokenManager
+  const setAuthToken = (token) => {
+    setAuthTokenState(token);
+    authTokenManager.initialize(token);
+    console.info("authTokenManager initialized for client_id", authTokenManager.getDecodedTokenData().client_id);
+    console.info("authTokenManager initialized with scope", authTokenManager.getDecodedTokenData().scope);
+  };
 
   useEffect(() => {
     const iife = async () => {
