@@ -104,11 +104,11 @@ function ShowValues(props) {
         >
           <Form>
             <TableView
-              selectionMode="single"
+              selectionMode="none"
               aria-label="Example table with dynamic content"
             >
               <TableHeader>
-                <Column>Property Name</Column>
+                <Column maxWidth={200}>Property Name</Column>
                 <Column>Value</Column>
                 <Column maxWidth={80}>&nbsp;</Column>
               </TableHeader>
