@@ -19,13 +19,14 @@ import {
   Column,
   TableBody,
 } from "@adobe/react-spectrum";
+import CopyIcon from '@spectrum-icons/workflow/Copy';
 import { useState, useEffect } from "react";
 import authTokenManager from '../utils/authTokenManager';
 
 function ShowValues(props) {
   const [contextProperties, setContextProperties] = useState([]);
   const [conn, setConn] = useState("");
-  const [authToken, setAuthTokenState] = useState("");
+  const [authToken, setAuthTokenState] = useState("undefined");
   // Custom setter that uses authTokenManager
   const setAuthToken = (token) => {
     setAuthTokenState(token);
@@ -81,12 +82,12 @@ function ShowValues(props) {
 
   /*************************
    * copy to clipboard  
-   * @param {string} text - The text to copy to the clipboard.
+   * @param {string} itemValue - The text to copy to the clipboard.
    * @returns {void}
    *************************/
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      console.log('Text copied to clipboard');
+  const copyToClipboard = (itemValue) => {
+    navigator.clipboard.writeText(itemValue).then(() => {
+      console.log(`Text copied to clipboard: ${itemValue}`);
     }).catch(err => {
       console.error('Failed to copy text: ', err);
     });
@@ -107,7 +108,9 @@ function ShowValues(props) {
               aria-label="Example table with dynamic content"
             >
               <TableHeader>
-                <Column>Property Name</Column><Column>Value</Column>
+                <Column>Property Name</Column>
+                <Column>Value</Column>
+                <Column maxWidth={80}>&nbsp;</Column>
               </TableHeader>
               <TableBody items={contextProperties}>
                 {(item) => (
@@ -117,9 +120,9 @@ function ShowValues(props) {
                     <Cell>
                       <Button
                         variant="primary"
-                        onPress={() => copyToClipboard(path)}
+                        onPress={() => copyToClipboard(item['value'])}
                         aria-label="Copy to clipboard">
-                          <Text>Copy</Text>
+                          <CopyIcon />
                       </Button>
                     </Cell>
                   </Row>
