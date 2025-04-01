@@ -5,7 +5,6 @@
  * add in example form for aem asset selector
  */
 import { attach } from "@adobe/uix-guest";
-import { CopyIcon } from '@spectrum-web-components/icons-workflow/icons/import/sp-icon-copy.js';
 import { extensionId } from "./Constants";
 import { 
   Button,
@@ -120,7 +119,7 @@ function ShowValues(props) {
                         variant="primary"
                         onPress={() => copyToClipboard(path)}
                         aria-label="Copy to clipboard">
-                          <CopyIcon/>
+                          <Text>Copy</Text>
                       </Button>
                     </Cell>
                   </Row>
