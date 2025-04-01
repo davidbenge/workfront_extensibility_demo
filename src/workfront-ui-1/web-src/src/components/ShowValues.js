@@ -18,7 +18,7 @@ import {
   TableBody,
 } from "@adobe/react-spectrum";
 import { useState, useEffect } from "react";
-import authTokenManager from './utils/authTokenManager';
+import authTokenManager from '../utils/authTokenManager';
 
 function ShowValues(props) {
   const [contextProperties, setContextProperties] = useState([]);
@@ -77,6 +77,19 @@ function ShowValues(props) {
     }
   }, [authToken]);
 
+  /*************************
+   * copy to clipboard  
+   * @param {string} text - The text to copy to the clipboard.
+   * @returns {void}
+   *************************/
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Text copied to clipboard');
+    }).catch(err => {
+      console.error('Failed to copy text: ', err);
+    });
+  };
+
   return (
     <>
       <Flex direction="column" gap="size-100" margin="size-200">
@@ -99,6 +112,14 @@ function ShowValues(props) {
                   <Row>
                     <Cell>{item['name']}</Cell>
                     <Cell>{item['value']}</Cell>
+                    <Cell>
+                      <Button
+                        variant="ghost"
+                        onPress={() => copyToClipboard(path)}
+                        aria-label="Copy to clipboard">
+                        <CopyIcon />
+                      </Button>
+                    </Cell>
                   </Row>
                 )}
               </TableBody>

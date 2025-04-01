@@ -5,7 +5,7 @@
  * add in example form for aem asset selector 
  */
 
-import { ActionButton, DialogTrigger, Text, Button, CopyIcon, Table, TableHeader, TableBody, Row, Cell } from "@adobe/react-spectrum";
+import { ActionButton, DialogTrigger, Text, Button, CopyIcon, TableHeader, TableBody, Row, Cell } from "@adobe/react-spectrum";
 import { attach } from "@adobe/uix-guest";
 import { extensionId } from "./Constants";
 import metadata from '../../../../app-metadata.json';
@@ -13,7 +13,7 @@ import { Picker, Item, Section, Flex, View, Form, ButtonGroup, TextField } from 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ContentFragmentSelector } from "@aem-sites/content-fragment-selector";
-import authTokenManager from './utils/authTokenManager';
+import authTokenManager from '../utils/authTokenManager';
 
 function CfExampleForm(props) {
   const navigate = useNavigate();
@@ -127,15 +127,6 @@ function CfExampleForm(props) {
             {contentFragments.map((path, index) => (
               <Row key={index}>
                 <Cell>{path}</Cell>
-                <Cell>
-                  <Button
-                    variant="ghost"
-                    onPress={() => copyToClipboard(path)}
-                    aria-label="Copy to clipboard"
-                  >
-                    <CopyIcon />
-                  </Button>
-                </Cell>
               </Row>
             ))}
           </TableBody>

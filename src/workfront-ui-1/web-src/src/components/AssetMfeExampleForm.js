@@ -14,11 +14,19 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {  } from '@assets/microfrontend';
 //import { AssetSelector } from 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/@assets/selectors/index.js';
+import authTokenManager from '../utils/authTokenManager';
 
 function AssetMfeExampleForm(props) {
   const navigate = useNavigate("");
   const [conn, setConn] = useState("");
-  const [authToken, setAuthToken] = useState("");
+  let [authToken, setAuthTokenState] = useState("");
+  // Custom setter that uses authTokenManager
+  const setAuthToken = (token) => {
+    setAuthTokenState(token);
+    authTokenManager.initialize(token);
+    console.info("authTokenManager initialized for client_id", authTokenManager.getDecodedTokenData().client_id);
+    console.info("authTokenManager initialized with scope", authTokenManager.getDecodedTokenData().scope);
+  };
   const [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
   const [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
   const [repositoryId, setRepositoryId] = useState("delivery-p142461-e1463136.adobeaemcloud.com");

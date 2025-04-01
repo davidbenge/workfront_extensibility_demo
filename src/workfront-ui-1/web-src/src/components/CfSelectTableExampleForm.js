@@ -19,9 +19,17 @@ import axios from "axios";
 import JoditEditor from 'jodit-react';
 //const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.com"; //STAGE
 const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.com"; //PROD
+import authTokenManager from '../utils/authTokenManager';
 
 function CfSelectExampleForm(props) {
-  const [authToken, setAuthToken] = React.useState("");
+  let [authToken, setAuthTokenState] = useState("");
+  // Custom setter that uses authTokenManager
+  const setAuthToken = (token) => {
+    setAuthTokenState(token);
+    authTokenManager.initialize(token);
+    console.info("authTokenManager initialized for client_id", authTokenManager.getDecodedTokenData().client_id);
+    console.info("authTokenManager initialized with scope", authTokenManager.getDecodedTokenData().scope);
+  };
   const [conn, setConn] = useState();
   // CF claim options
   let [claims, setClaims] = React.useState([]);
