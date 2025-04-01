@@ -12,6 +12,7 @@
     "@adobe/workfront-ui-ext-tpl": "^0.0.5",
     "@react-spectrum/list": "^3.0.0-rc.0",
     "@spectrum-icons/workflow": "^3.2.0",
+    "@spectrum-web-components/icons-workflow": "^1.4.0",
     "axios": "^1.8.4",
     "chalk": "^4",
     "core-js": "^3.6.4",

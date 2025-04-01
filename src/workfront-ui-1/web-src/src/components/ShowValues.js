@@ -5,12 +5,15 @@
  * add in example form for aem asset selector
  */
 import { attach } from "@adobe/uix-guest";
+import { CopyIcon } from '@spectrum-web-components/icons-workflow/icons/import/sp-icon-copy.js';
 import { extensionId } from "./Constants";
-import {
+import { 
+  Button,
   Flex,
   View,
   Row,
   Cell,
+  Text,
   Form,
   TableView,
   TableHeader,
@@ -114,10 +117,10 @@ function ShowValues(props) {
                     <Cell>{item['value']}</Cell>
                     <Cell>
                       <Button
-                        variant="ghost"
+                        variant="primary"
                         onPress={() => copyToClipboard(path)}
                         aria-label="Copy to clipboard">
-                        <CopyIcon />
+                          <CopyIcon/>
                       </Button>
                     </Cell>
                   </Row>
