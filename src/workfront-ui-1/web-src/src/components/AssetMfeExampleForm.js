@@ -12,7 +12,7 @@ import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, Button, TextField } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  } from '@assets/microfrontend';
+//import {  } from '@assets/microfrontend';
 //import { AssetSelector } from 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/@assets/selectors/index.js';
 import authTokenManager from '../utils/authTokenManager';
 

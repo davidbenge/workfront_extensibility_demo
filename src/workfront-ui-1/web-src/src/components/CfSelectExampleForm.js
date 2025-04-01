@@ -12,7 +12,7 @@ import metadata from '../../../../app-metadata.json';
 import { Picker, Item, Section, Flex, View, Form, ButtonGroup, TextField } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ContentFragmentSelector } from "@aem-sites/content-fragment-selector";
+//import { ContentFragmentSelector } from "@aem-sites/content-fragment-selector";
 import authTokenManager from '../utils/authTokenManager';
 
 function CfExampleForm(props) {
