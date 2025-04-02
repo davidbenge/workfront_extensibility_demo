@@ -10,6 +10,7 @@
     "@adobe/react-spectrum": "^3.37.1",
     "@adobe/uix-guest": "^0.10.5",
     "@adobe/workfront-ui-ext-tpl": "^0.0.5",
+	"@aem-sites/content-fragment-selector": "file:/./local_modules/content-fragment-selector-0.4.6.tgz",
     "@react-spectrum/list": "^3.0.0-rc.0",
     "@spectrum-icons/workflow": "^4.2.19",
     "axios": "^1.7.7",
