@@ -2,28 +2,24 @@
  * <license header>
  *
  * add in CF fragment selector
- * add in example form for aem asset selector
  */
 
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-	ActionButton,
-	DialogTrigger,
-	Text,
 	Button,
-	CopyIcon,
+	TableView,
 	TableHeader,
 	TableBody,
+	Column,
 	Row,
 	Cell,
 	Flex,
 } from "@adobe/react-spectrum";
+import CopyIcon from "@spectrum-icons/workflow/Copy";
 import { attach } from "@adobe/uix-guest";
-import { extensionId } from "./Constants";
-import metadata from "../../../../app-metadata.json";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// import { ContentFragmentSelector } from "https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js";
 import authTokenManager from "../utils/authTokenManager";
+import { extensionId } from "./Constants";
 
 function CfExampleForm(props) {
 	const navigate = useNavigate();
@@ -41,22 +37,16 @@ function CfExampleForm(props) {
 			authTokenManager.getDecodedTokenData().scope
 		);
 	};
-	// CF claim options
-	let [claims, setClaims] = useState([]);
-	let [selectedSecondaryClaimId, setSelectedSecondaryClaimId] =
-		useState(null);
-	let [claimName, setClaimName] = useState("");
+
 	const [conn, setConn] = useState();
 	let [imsOrg, setImsOrg] = useState("33C1401053CF76370A490D4C@AdobeOrg");
-	let [imsClientId, setImsClientId] = useState("tmd_asset_selector_poc"); //aem-assets-frontend-1 exc_app tmd_asset_selector_poc
 	let [repoId, setRepositoryId] = useState(
-		"author-p111858-e1309055.adobeaemcloud.net"
+		"author-p111858-e1309034.adobeaemcloud.net"
 	);
 	const [isOpen, setIsOpen] = useState(true);
-	const [localNavVisible, setLocalNavVisible] = useState(true);
 	const [contentFragments, setContentFragments] = useState([]);
-	const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.net"; //STAGE
-	//const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.net"; //PROD
+	// const AEM_HOST = "https://author-p111858-e1309055.adobeaemcloud.net"; //STAGE
+	// const AEM_HOST = "https://author-p111858-e1309034.adobeaemcloud.net"; //PROD
 
 	const handleGoBack = () => {
 		navigate("/");
@@ -86,68 +76,71 @@ function CfExampleForm(props) {
 
 	useEffect(() => {
 		if (conn) {
-			setLocalNavVisible(false); // hide the local nav
 			// Using the connection created above, grab the document details from the host tunnel.
 			//  conn?.host?.document?.getDocumentDetails().then(setDocDetails);
 			const auth = conn?.sharedContext?.get("auth");
+			console.log("###### auth ######", conn, auth);
 			const token = auth.imsToken;
 			setAuthToken(token); // set the auth token
-			console.info("authToken passed down from WF", token); //auth token passed down from hosting workfront.
+			console.info(
+				"authToken passed down from WF",
+				token,
+				authTokenManager.decodedToken
+			); //auth token passed down from hosting workfront.
 			console.info(
 				"HOST",
 				JSON.stringify(conn?.sharedContext?.get("host"), null, 2)
 			); //host context passed down from hosting workfront.
 
-			initContentFragmentSelector({
+			// This should be used only if the token is a valid one for the CFS MFE
+			const CFSProps = {
 				orgId: imsOrg,
-				// "33C1401053CF76370A490D4C@AdobeOrg",
-				// "908936ED5D35CC220A495CD4@AdobeOrg",
-				imsToken: authToken,
 				repoId: repoId,
-				// "author-p111858-e1309034.adobeaemcloud.net",
-				// "author-p7452-e12433.adobeaemcloud.com",
-				// env: "PROD",
+				imsToken: authToken,
+				env: "PROD",
+			};
+
+			const CFSWithAuthFlowProps = {
+				orgId: imsOrg,
+				imsClientId: authTokenManager.getDecodedTokenData().client_id,
+				imsScope: authTokenManager.getDecodedTokenData().scope,
+			};
+
+			initContentFragmentSelector({
+				// ...CFSProps,
+				...CFSWithAuthFlowProps,
 				isOpen: isOpen,
 				filter: {
 					folder: "/content/dam",
 					status: ["PUBLISHED", "MODIFIED"],
-					// tag: [
-					// 	{
-					// 		id: "1:",
-					// 		name: "1",
-					// 		path: "/content/cq:tags/1",
-					// 		description: "",
-					// 	},
-					// ],
-				},
-				readonlyFilters: {
-					// tag: [
-					// 	{
-					// 		id: "1:",
-					// 		name: "1",
-					// 		path: "/content/cq:tags/1",
-					// 		description: "",
-					// 	},
-					// ],
 				},
 				onDismiss: () => setIsOpen(false),
-				onSubmit: ({ contentFragments, domainNames }) => {
+				onSubmit: ({ contentFragments }) => {
 					const selectedContentFragment = contentFragments[0];
-					const usedDomainName = domainNames[0];
-					const contentFragmentAlert = `Example link: https://${usedDomainName}${selectedContentFragment.path}.cfm.gql.json`;
-					console.log("Selection", contentFragments, domainNames);
+					console.log("Selection", contentFragments);
 					setContentFragments((prev) => [
 						...prev,
-						contentFragmentPath,
+						selectedContentFragment.path,
 					]);
 					setIsOpen(false);
 				},
 			});
 		}
-	}, [conn]);
+	}, [conn, isOpen]);
 
 	async function initContentFragmentSelector(contentFragmentSelectorProps) {
-		// this sucks, i am not proud of this.
+		if (!contentFragmentSelectorProps.isOpen) {
+			const fragmentSelectorContainer = document.getElementById(
+				"cf-selector-container"
+			);
+			fragmentSelectorContainer.innerHTML = "";
+			fragmentSelectorContainer.style.width = "100%";
+			fragmentSelectorContainer.style.height = "100%";
+
+			return;
+		}
+
+		// Load the script dynamically
 		let script = document.createElement("script");
 		script.src =
 			"https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js";
@@ -161,9 +154,11 @@ function CfExampleForm(props) {
 			// The script has loaded successfully; you can now use its functions or variables
 
 			(async () => {
-				const { renderContentFragmentSelector } =
-					window.PureJSSelectors;
-				renderContentFragmentSelector(
+				const {
+					renderContentFragmentSelector,
+					renderContentFragmentSelectorWithAuthFlow,
+				} = window.PureJSSelectors;
+				renderContentFragmentSelectorWithAuthFlow(
 					fragmentSelectorContainer,
 					contentFragmentSelectorProps
 				);
@@ -176,7 +171,10 @@ function CfExampleForm(props) {
 			<div id="cf-selector-container"></div>
 
 			{contentFragments.length > 0 && (
-				<Table aria-label="Content Fragment Paths">
+				<TableView
+					aria-label="Example table with single selection"
+					selectionMode="single"
+				>
 					<TableHeader>
 						<Column>Path</Column>
 						<Column>Actions</Column>
@@ -185,10 +183,19 @@ function CfExampleForm(props) {
 						{contentFragments.map((path, index) => (
 							<Row key={index}>
 								<Cell>{path}</Cell>
+								<Cell>
+									<Button
+										variant="ghost"
+										onPress={() => copyToClipboard(path)}
+										aria-label="Copy to clipboard"
+									>
+										<CopyIcon />
+									</Button>
+								</Cell>
 							</Row>
 						))}
 					</TableBody>
-				</Table>
+				</TableView>
 			)}
 		</Flex>
 	);
