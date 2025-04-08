@@ -140,30 +140,19 @@ function CfExampleForm(props) {
 			return;
 		}
 
-		// Load the script dynamically
-		let script = document.createElement("script");
-		script.src =
-			"https://experience.adobe.com/solutions/CQ-sites-content-fragment-selector/static-assets/resources/content-fragment-selector.js";
-		document.body.appendChild(script);
-
 		const fragmentSelectorContainer = document.getElementById(
 			"cf-selector-container"
 		);
 
-		script.onload = function () {
-			// The script has loaded successfully; you can now use its functions or variables
+		const {
+			renderContentFragmentSelector,
+			renderContentFragmentSelectorWithAuthFlow,
+		} = window.PureJSSelectors;
 
-			(async () => {
-				const {
-					renderContentFragmentSelector,
-					renderContentFragmentSelectorWithAuthFlow,
-				} = window.PureJSSelectors;
-				renderContentFragmentSelectorWithAuthFlow(
-					fragmentSelectorContainer,
-					contentFragmentSelectorProps
-				);
-			})();
-		};
+		renderContentFragmentSelectorWithAuthFlow(
+			fragmentSelectorContainer,
+			contentFragmentSelectorProps
+		);
 	}
 
 	return (
